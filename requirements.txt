@@ -11,16 +11,15 @@ ninja
 pytorch-msssim
 fsspec
 loguru
---extra-index-url https://download.pytorch.org/whl/cu122
-torch==2.2.0
-torchvision==0.17.0
+torch
+torchvision
 ipdb
 nerfview
 torchmetrics
 splines==0.3.2
 pyyaml
-black==24.4.2
-isort==5.13.2
+black
+isort
 --extra-index-url https://pypi.nvidia.com
 cudf-cu12==24.6.*
 dask-cudf-cu12==24.6.*
