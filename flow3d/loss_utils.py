@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from sklearn.neighbors import NearestNeighbors
+from sds import SDSEdit
 
 
 def masked_mse_loss(pred, gt, mask=None, normalize=True, quantile: float = 1.0):
@@ -133,6 +134,18 @@ def compute_z_acc_loss(means_ts_nb: torch.Tensor, w2cs: torch.Tensor):
         ((means_ts_nb[:, 2] - means_ts_nb[:, 1]) * ray_dir).sum(dim=-1) ** 2
     ).mean()
     return acc_loss
+
+
+def compute_motion_prior_loss(tracks_2d):
+    # initialize model for the first time
+    if compute_motion_prior_loss.model is None:
+        compute_motion_prior_loss.model = SDSEdit()
+    model = compute_motion_prior_loss.model
+
+    loss = model(tracks_2d)
+
+    return loss
+compute_motion_prior_loss.model = None
 
 
 def compute_se3_smoothness_loss(

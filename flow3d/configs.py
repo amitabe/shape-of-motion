@@ -45,6 +45,7 @@ class LossesConfig:
     w_smooth_tracks: float = 2.0
     w_scale_var: float = 0.01
     w_z_accel: float = 1.0
+    w_motion: float = 0.1
 
 
 @dataclass

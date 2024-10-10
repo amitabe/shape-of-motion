@@ -16,6 +16,7 @@ from flow3d.loss_utils import (
     compute_gradient_loss,
     compute_se3_smoothness_loss,
     compute_z_acc_loss,
+    compute_motion_prior_loss,
     masked_l1_loss,
 )
 from flow3d.metrics import PCK, mLPIPS, mPSNR, mSSIM
@@ -477,6 +478,10 @@ class Trainer:
         z_accel_loss = compute_z_acc_loss(means_fg_nbs, w2cs)
         loss += self.losses_cfg.w_z_accel * z_accel_loss
 
+        # motion prior loss
+        motion_loss = compute_motion_prior_loss()
+        loss += self.losses_cfg.w_motion * motion_loss
+
         # Prepare stats for logging.
         stats = {
             "train/loss": loss.item(),
@@ -488,6 +493,7 @@ class Trainer:
             "train/track_2d_loss": track_2d_loss.item(),
             "train/small_accel_loss": small_accel_loss.item(),
             "train/z_acc_loss": z_accel_loss.item(),
+            "train/motion_loss": motion_loss.item(),
             "train/num_gaussians": self.model.num_gaussians,
             "train/num_fg_gaussians": self.model.num_fg_gaussians,
             "train/num_bg_gaussians": self.model.num_bg_gaussians,
